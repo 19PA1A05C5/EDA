@@ -1,1 +1,898 @@
-https://colab.research.google.com/drive/1WXkr-atl4fS7SZbJXQ6VhBWrJLzi2F7c#scrollTo=8liI8A-V-lxU&line=5&uniqifier=1 
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled31.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyOeVdk6Z0Ph0d2cUEJkeFfL",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/19PA1A0569/EDA_/blob/main/Untitled31.ipynb\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "8liI8A-V-lxU"
+      },
+      "source": [
+        "\n",
+        "\n",
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "from collections import Counter\n",
+        "import matplotlib.pyplot as plt\n",
+        "import matplotlib\n",
+        "import seaborn as sns\n",
+        "import plotly.express as px\n"
+      ],
+      "execution_count": 3,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 204
+        },
+        "id": "cnfMfpXr_UB_",
+        "outputId": "a9888bf0-91b6-41f6-c4de-d9e850a27c48"
+      },
+      "source": [
+        "heart = pd.read_csv('/content/heart_.csv')\n",
+        "heart.head()"
+      ],
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>age</th>\n",
+              "      <th>sex</th>\n",
+              "      <th>cp</th>\n",
+              "      <th>trtbps</th>\n",
+              "      <th>chol</th>\n",
+              "      <th>fbs</th>\n",
+              "      <th>restecg</th>\n",
+              "      <th>thalachh</th>\n",
+              "      <th>exng</th>\n",
+              "      <th>oldpeak</th>\n",
+              "      <th>slp</th>\n",
+              "      <th>caa</th>\n",
+              "      <th>thall</th>\n",
+              "      <th>output</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>63</td>\n",
+              "      <td>1</td>\n",
+              "      <td>3</td>\n",
+              "      <td>145</td>\n",
+              "      <td>233</td>\n",
+              "      <td>1</td>\n",
+              "      <td>0</td>\n",
+              "      <td>150</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2.3</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>37</td>\n",
+              "      <td>1</td>\n",
+              "      <td>2</td>\n",
+              "      <td>130</td>\n",
+              "      <td>250</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "      <td>187</td>\n",
+              "      <td>0</td>\n",
+              "      <td>3.5</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>41</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "      <td>130</td>\n",
+              "      <td>204</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>172</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1.4</td>\n",
+              "      <td>2</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>56</td>\n",
+              "      <td>1</td>\n",
+              "      <td>1</td>\n",
+              "      <td>120</td>\n",
+              "      <td>236</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "      <td>178</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0.8</td>\n",
+              "      <td>2</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>57</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>120</td>\n",
+              "      <td>354</td>\n",
+              "      <td>0</td>\n",
+              "      <td>1</td>\n",
+              "      <td>163</td>\n",
+              "      <td>1</td>\n",
+              "      <td>0.6</td>\n",
+              "      <td>2</td>\n",
+              "      <td>0</td>\n",
+              "      <td>2</td>\n",
+              "      <td>1</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "   age  sex  cp  trtbps  chol  fbs  ...  exng  oldpeak  slp  caa  thall  output\n",
+              "0   63    1   3     145   233    1  ...     0      2.3    0    0      1       1\n",
+              "1   37    1   2     130   250    0  ...     0      3.5    0    0      2       1\n",
+              "2   41    0   1     130   204    0  ...     0      1.4    2    0      2       1\n",
+              "3   56    1   1     120   236    0  ...     0      0.8    2    0      2       1\n",
+              "4   57    0   0     120   354    0  ...     1      0.6    2    0      2       1\n",
+              "\n",
+              "[5 rows x 14 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 4
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "YwDkd-3I_Cq0",
+        "outputId": "b8ee039d-020e-4a5d-e811-d6438ccb6a10"
+      },
+      "source": [
+        "heart.columns"
+      ],
+      "execution_count": 8,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['age', 'sex', 'cp', 'trtbps', 'chol', 'fbs', 'restecg', 'thalachh',\n",
+              "       'exng', 'oldpeak', 'slp', 'caa', 'thall', 'output'],\n",
+              "      dtype='object')"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 8
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Zbe17VOl_l-y",
+        "outputId": "c571b979-d396-433d-eca0-1783739cb545"
+      },
+      "source": [
+        "heart.info()"
+      ],
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 303 entries, 0 to 302\n",
+            "Data columns (total 14 columns):\n",
+            " #   Column    Non-Null Count  Dtype  \n",
+            "---  ------    --------------  -----  \n",
+            " 0   age       303 non-null    int64  \n",
+            " 1   sex       303 non-null    int64  \n",
+            " 2   cp        303 non-null    int64  \n",
+            " 3   trtbps    303 non-null    int64  \n",
+            " 4   chol      303 non-null    int64  \n",
+            " 5   fbs       303 non-null    int64  \n",
+            " 6   restecg   303 non-null    int64  \n",
+            " 7   thalachh  303 non-null    int64  \n",
+            " 8   exng      303 non-null    int64  \n",
+            " 9   oldpeak   303 non-null    float64\n",
+            " 10  slp       303 non-null    int64  \n",
+            " 11  caa       303 non-null    int64  \n",
+            " 12  thall     303 non-null    int64  \n",
+            " 13  output    303 non-null    int64  \n",
+            "dtypes: float64(1), int64(13)\n",
+            "memory usage: 33.3 KB\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 317
+        },
+        "id": "bClz5ywWxjVe",
+        "outputId": "b62b1b53-2147-4991-ad1e-1309d216a545"
+      },
+      "source": [
+        "heart.describe()"
+      ],
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/html": [
+              "<div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>age</th>\n",
+              "      <th>sex</th>\n",
+              "      <th>cp</th>\n",
+              "      <th>trtbps</th>\n",
+              "      <th>chol</th>\n",
+              "      <th>fbs</th>\n",
+              "      <th>restecg</th>\n",
+              "      <th>thalachh</th>\n",
+              "      <th>exng</th>\n",
+              "      <th>oldpeak</th>\n",
+              "      <th>slp</th>\n",
+              "      <th>caa</th>\n",
+              "      <th>thall</th>\n",
+              "      <th>output</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>count</th>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "      <td>303.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>mean</th>\n",
+              "      <td>54.366337</td>\n",
+              "      <td>0.683168</td>\n",
+              "      <td>0.966997</td>\n",
+              "      <td>131.623762</td>\n",
+              "      <td>246.264026</td>\n",
+              "      <td>0.148515</td>\n",
+              "      <td>0.528053</td>\n",
+              "      <td>149.646865</td>\n",
+              "      <td>0.326733</td>\n",
+              "      <td>1.039604</td>\n",
+              "      <td>1.399340</td>\n",
+              "      <td>0.729373</td>\n",
+              "      <td>2.313531</td>\n",
+              "      <td>0.544554</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>std</th>\n",
+              "      <td>9.082101</td>\n",
+              "      <td>0.466011</td>\n",
+              "      <td>1.032052</td>\n",
+              "      <td>17.538143</td>\n",
+              "      <td>51.830751</td>\n",
+              "      <td>0.356198</td>\n",
+              "      <td>0.525860</td>\n",
+              "      <td>22.905161</td>\n",
+              "      <td>0.469794</td>\n",
+              "      <td>1.161075</td>\n",
+              "      <td>0.616226</td>\n",
+              "      <td>1.022606</td>\n",
+              "      <td>0.612277</td>\n",
+              "      <td>0.498835</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>min</th>\n",
+              "      <td>29.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>94.000000</td>\n",
+              "      <td>126.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>71.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>25%</th>\n",
+              "      <td>47.500000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>120.000000</td>\n",
+              "      <td>211.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>133.500000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>50%</th>\n",
+              "      <td>55.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>130.000000</td>\n",
+              "      <td>240.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>153.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.800000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>75%</th>\n",
+              "      <td>61.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>140.000000</td>\n",
+              "      <td>274.500000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>166.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>1.600000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>max</th>\n",
+              "      <td>77.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "      <td>200.000000</td>\n",
+              "      <td>564.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>202.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>6.200000</td>\n",
+              "      <td>2.000000</td>\n",
+              "      <td>4.000000</td>\n",
+              "      <td>3.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>"
+            ],
+            "text/plain": [
+              "              age         sex          cp  ...         caa       thall      output\n",
+              "count  303.000000  303.000000  303.000000  ...  303.000000  303.000000  303.000000\n",
+              "mean    54.366337    0.683168    0.966997  ...    0.729373    2.313531    0.544554\n",
+              "std      9.082101    0.466011    1.032052  ...    1.022606    0.612277    0.498835\n",
+              "min     29.000000    0.000000    0.000000  ...    0.000000    0.000000    0.000000\n",
+              "25%     47.500000    0.000000    0.000000  ...    0.000000    2.000000    0.000000\n",
+              "50%     55.000000    1.000000    1.000000  ...    0.000000    2.000000    1.000000\n",
+              "75%     61.000000    1.000000    2.000000  ...    1.000000    3.000000    1.000000\n",
+              "max     77.000000    1.000000    3.000000  ...    4.000000    3.000000    1.000000\n",
+              "\n",
+              "[8 rows x 14 columns]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 6
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "ngXiM-bFD2Br",
+        "outputId": "1f593b2c-bb45-4a07-8215-c63020753bbb"
+      },
+      "source": [
+        "heart.columns[heart.isnull().any()]"
+      ],
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index([], dtype='object')"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 15
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "JRk4TSsFBA3-"
+      },
+      "source": [
+        "Insights drawn by calling info() and unique() methods on the DataFrame\n",
+        "\n",
+        "**There are no null values in the Data.\n",
+        "\n",
+        "**This data consists of 14 Columns and 303 Rows.\n",
+        "\n",
+        "**We have total of 5 Numerical Columns: age, trtbps, chol, thalachh and oldpeak.\n",
+        "\n",
+        "**And we have total of 9 Categorical Columns: gender, cp, tbs, restecg, exng, slp, caa, thall, output.\n",
+        "\n",
+        "**Since the data completely comprises of just numerical Data, we directly dive forward to EDA without preprocessing."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 346
+        },
+        "id": "I2ToAh6_HkIN",
+        "outputId": "e240be65-db49-4888-918c-d9b1d51e7c44"
+      },
+      "source": [
+        "\n",
+        "ax=sns.countplot(x='sex', data=heart)\n",
+        "ax.set(xlabel='1=Male, 0=Female',ylabel='Counts',title='Gender distribution')"
+      ],
+      "execution_count": 28,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "[Text(0, 0.5, 'Counts'),\n",
+              " Text(0.5, 0, '1=Male, 0=Female'),\n",
+              " Text(0.5, 1.0, 'Gender distribution')]"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 28
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": "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\n",
+            "text/plain": [
+              "<Figure size 432x288 with 1 Axes>"
+            ]
+          },
+          "metadata": {
+            "tags": [],
+            "needs_background": "light"
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "MxDS6BpeIOio"
+      },
+      "source": [
+        "**Gender distribution of people having Exercise Induced Asthama**"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 279
+        },
+        "id": "KzhT9H0-IMtY",
+        "outputId": "5af280d1-7a93-4777-c8e4-7733547bb96b"
+      },
+      "source": [
+        "ax=sns.countplot(x='exng',hue='sex',data=heart)"
+      ],
+      "execution_count": 32,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": "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\n",
+            "text/plain": [
+              "<Figure size 432x288 with 1 Axes>"
+            ]
+          },
+          "metadata": {
+            "tags": [],
+            "needs_background": "light"
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "zxZjVe5TJJ5U"
+      },
+      "source": [
+        "**Distribution of Chest Pain Type**"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 279
+        },
+        "id": "Xh67aUcEJDdU",
+        "outputId": "37b08a8f-68ec-4c7f-cc2c-11aeb103acc0"
+      },
+      "source": [
+        "ax=sns.countplot(x=\"cp\", data=heart)"
+      ],
+      "execution_count": 34,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": "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\n",
+            "text/plain": [
+              "<Figure size 432x288 with 1 Axes>"
+            ]
+          },
+          "metadata": {
+            "tags": [],
+            "needs_background": "light"
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "BmGTmaz8Az2m"
+      },
+      "source": [
+        "**Distribution of Age w.r.t Heart Disease**"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 542
+        },
+        "id": "IcHBQ0lzFFBm",
+        "outputId": "1bc469a6-797f-4b8b-cd66-d8e69e9ec0ce"
+      },
+      "source": [
+        "fig = px.histogram(heart, x=\"age\",color=\"output\",\n",
+        "                   marginal=\"box\",\n",
+        "                   hover_data=heart.columns,\n",
+        "                  color_discrete_sequence=['#512b58','#f64c72'])\n",
+        "fig.show()\n"
+      ],
+      "execution_count": 24,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/html": [
+              "<html>\n",
+              "<head><meta charset=\"utf-8\" /></head>\n",
+              "<body>\n",
+              "    <div>\n",
+              "            <script src=\"https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_SVG\"></script><script type=\"text/javascript\">if (window.MathJax) {MathJax.Hub.Config({SVG: {font: \"STIX-Web\"}});}</script>\n",
+              "                <script type=\"text/javascript\">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>\n",
+              "        <script src=\"https://cdn.plot.ly/plotly-latest.min.js\"></script>    \n",
+              "            <div id=\"01b97672-5426-497c-a9db-4218bc839681\" class=\"plotly-graph-div\" style=\"height:525px; width:100%;\"></div>\n",
+              "            <script type=\"text/javascript\">\n",
+              "                \n",
+              "                    window.PLOTLYENV=window.PLOTLYENV || {};\n",
+              "                    \n",
+              "                if (document.getElementById(\"01b97672-5426-497c-a9db-4218bc839681\")) {\n",
+              "                    Plotly.newPlot(\n",
+              "                        '01b97672-5426-497c-a9db-4218bc839681',\n",
+              "                        [{\"alignmentgroup\": \"True\", \"bingroup\": \"x\", \"hoverlabel\": {\"namelength\": 0}, \"hovertemplate\": \"output=1<br>age=%{x}<br>count=%{y}\", \"legendgroup\": \"output=1\", \"marker\": {\"color\": \"#512b58\"}, \"name\": \"output=1\", \"offsetgroup\": \"output=1\", \"orientation\": \"v\", \"showlegend\": true, \"type\": \"histogram\", \"x\": [63, 37, 41, 56, 57, 57, 56, 44, 52, 57, 54, 48, 49, 64, 58, 50, 58, 66, 43, 69, 59, 44, 42, 61, 40, 71, 59, 51, 65, 53, 41, 65, 44, 54, 51, 46, 54, 54, 65, 65, 51, 48, 45, 53, 39, 52, 44, 47, 53, 53, 51, 66, 62, 44, 63, 52, 48, 45, 34, 57, 71, 54, 52, 41, 58, 35, 51, 45, 44, 62, 54, 51, 29, 51, 43, 55, 51, 59, 52, 58, 41, 45, 60, 52, 42, 67, 68, 46, 54, 58, 48, 57, 52, 54, 45, 53, 62, 52, 43, 53, 42, 59, 63, 42, 50, 68, 69, 45, 50, 50, 64, 57, 64, 43, 55, 37, 41, 56, 46, 46, 64, 59, 41, 54, 39, 34, 47, 67, 52, 74, 54, 49, 42, 41, 41, 49, 60, 62, 57, 64, 51, 43, 42, 67, 76, 70, 44, 60, 44, 42, 66, 71, 64, 66, 39, 58, 47, 35, 58, 56, 56, 55, 41, 38, 38], \"xaxis\": \"x\", \"yaxis\": \"y\"}, {\"alignmentgroup\": \"True\", \"customdata\": [[63.0, 1.0, 3.0, 145.0, 233.0, 1.0, 0.0, 150.0, 0.0, 2.3, 0.0, 0.0, 1.0, 1.0], [37.0, 1.0, 2.0, 130.0, 250.0, 0.0, 1.0, 187.0, 0.0, 3.5, 0.0, 0.0, 2.0, 1.0], [41.0, 0.0, 1.0, 130.0, 204.0, 0.0, 0.0, 172.0, 0.0, 1.4, 2.0, 0.0, 2.0, 1.0], [56.0, 1.0, 1.0, 120.0, 236.0, 0.0, 1.0, 178.0, 0.0, 0.8, 2.0, 0.0, 2.0, 1.0], [57.0, 0.0, 0.0, 120.0, 354.0, 0.0, 1.0, 163.0, 1.0, 0.6, 2.0, 0.0, 2.0, 1.0], [57.0, 1.0, 0.0, 140.0, 192.0, 0.0, 1.0, 148.0, 0.0, 0.4, 1.0, 0.0, 1.0, 1.0], [56.0, 0.0, 1.0, 140.0, 294.0, 0.0, 0.0, 153.0, 0.0, 1.3, 1.0, 0.0, 2.0, 1.0], [44.0, 1.0, 1.0, 120.0, 263.0, 0.0, 1.0, 173.0, 0.0, 0.0, 2.0, 0.0, 3.0, 1.0], [52.0, 1.0, 2.0, 172.0, 199.0, 1.0, 1.0, 162.0, 0.0, 0.5, 2.0, 0.0, 3.0, 1.0], [57.0, 1.0, 2.0, 150.0, 168.0, 0.0, 1.0, 174.0, 0.0, 1.6, 2.0, 0.0, 2.0, 1.0], [54.0, 1.0, 0.0, 140.0, 239.0, 0.0, 1.0, 160.0, 0.0, 1.2, 2.0, 0.0, 2.0, 1.0], [48.0, 0.0, 2.0, 130.0, 275.0, 0.0, 1.0, 139.0, 0.0, 0.2, 2.0, 0.0, 2.0, 1.0], [49.0, 1.0, 1.0, 130.0, 266.0, 0.0, 1.0, 171.0, 0.0, 0.6, 2.0, 0.0, 2.0, 1.0], [64.0, 1.0, 3.0, 110.0, 211.0, 0.0, 0.0, 144.0, 1.0, 1.8, 1.0, 0.0, 2.0, 1.0], [58.0, 0.0, 3.0, 150.0, 283.0, 1.0, 0.0, 162.0, 0.0, 1.0, 2.0, 0.0, 2.0, 1.0], [50.0, 0.0, 2.0, 120.0, 219.0, 0.0, 1.0, 158.0, 0.0, 1.6, 1.0, 0.0, 2.0, 1.0], [58.0, 0.0, 2.0, 120.0, 340.0, 0.0, 1.0, 172.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [66.0, 0.0, 3.0, 150.0, 226.0, 0.0, 1.0, 114.0, 0.0, 2.6, 0.0, 0.0, 2.0, 1.0], [43.0, 1.0, 0.0, 150.0, 247.0, 0.0, 1.0, 171.0, 0.0, 1.5, 2.0, 0.0, 2.0, 1.0], [69.0, 0.0, 3.0, 140.0, 239.0, 0.0, 1.0, 151.0, 0.0, 1.8, 2.0, 2.0, 2.0, 1.0], [59.0, 1.0, 0.0, 135.0, 234.0, 0.0, 1.0, 161.0, 0.0, 0.5, 1.0, 0.0, 3.0, 1.0], [44.0, 1.0, 2.0, 130.0, 233.0, 0.0, 1.0, 179.0, 1.0, 0.4, 2.0, 0.0, 2.0, 1.0], [42.0, 1.0, 0.0, 140.0, 226.0, 0.0, 1.0, 178.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [61.0, 1.0, 2.0, 150.0, 243.0, 1.0, 1.0, 137.0, 1.0, 1.0, 1.0, 0.0, 2.0, 1.0], [40.0, 1.0, 3.0, 140.0, 199.0, 0.0, 1.0, 178.0, 1.0, 1.4, 2.0, 0.0, 3.0, 1.0], [71.0, 0.0, 1.0, 160.0, 302.0, 0.0, 1.0, 162.0, 0.0, 0.4, 2.0, 2.0, 2.0, 1.0], [59.0, 1.0, 2.0, 150.0, 212.0, 1.0, 1.0, 157.0, 0.0, 1.6, 2.0, 0.0, 2.0, 1.0], [51.0, 1.0, 2.0, 110.0, 175.0, 0.0, 1.0, 123.0, 0.0, 0.6, 2.0, 0.0, 2.0, 1.0], [65.0, 0.0, 2.0, 140.0, 417.0, 1.0, 0.0, 157.0, 0.0, 0.8, 2.0, 1.0, 2.0, 1.0], [53.0, 1.0, 2.0, 130.0, 197.0, 1.0, 0.0, 152.0, 0.0, 1.2, 0.0, 0.0, 2.0, 1.0], [41.0, 0.0, 1.0, 105.0, 198.0, 0.0, 1.0, 168.0, 0.0, 0.0, 2.0, 1.0, 2.0, 1.0], [65.0, 1.0, 0.0, 120.0, 177.0, 0.0, 1.0, 140.0, 0.0, 0.4, 2.0, 0.0, 3.0, 1.0], [44.0, 1.0, 1.0, 130.0, 219.0, 0.0, 0.0, 188.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [54.0, 1.0, 2.0, 125.0, 273.0, 0.0, 0.0, 152.0, 0.0, 0.5, 0.0, 1.0, 2.0, 1.0], [51.0, 1.0, 3.0, 125.0, 213.0, 0.0, 0.0, 125.0, 1.0, 1.4, 2.0, 1.0, 2.0, 1.0], [46.0, 0.0, 2.0, 142.0, 177.0, 0.0, 0.0, 160.0, 1.0, 1.4, 0.0, 0.0, 2.0, 1.0], [54.0, 0.0, 2.0, 135.0, 304.0, 1.0, 1.0, 170.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [54.0, 1.0, 2.0, 150.0, 232.0, 0.0, 0.0, 165.0, 0.0, 1.6, 2.0, 0.0, 3.0, 1.0], [65.0, 0.0, 2.0, 155.0, 269.0, 0.0, 1.0, 148.0, 0.0, 0.8, 2.0, 0.0, 2.0, 1.0], [65.0, 0.0, 2.0, 160.0, 360.0, 0.0, 0.0, 151.0, 0.0, 0.8, 2.0, 0.0, 2.0, 1.0], [51.0, 0.0, 2.0, 140.0, 308.0, 0.0, 0.0, 142.0, 0.0, 1.5, 2.0, 1.0, 2.0, 1.0], [48.0, 1.0, 1.0, 130.0, 245.0, 0.0, 0.0, 180.0, 0.0, 0.2, 1.0, 0.0, 2.0, 1.0], [45.0, 1.0, 0.0, 104.0, 208.0, 0.0, 0.0, 148.0, 1.0, 3.0, 1.0, 0.0, 2.0, 1.0], [53.0, 0.0, 0.0, 130.0, 264.0, 0.0, 0.0, 143.0, 0.0, 0.4, 1.0, 0.0, 2.0, 1.0], [39.0, 1.0, 2.0, 140.0, 321.0, 0.0, 0.0, 182.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [52.0, 1.0, 1.0, 120.0, 325.0, 0.0, 1.0, 172.0, 0.0, 0.2, 2.0, 0.0, 2.0, 1.0], [44.0, 1.0, 2.0, 140.0, 235.0, 0.0, 0.0, 180.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [47.0, 1.0, 2.0, 138.0, 257.0, 0.0, 0.0, 156.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [53.0, 0.0, 2.0, 128.0, 216.0, 0.0, 0.0, 115.0, 0.0, 0.0, 2.0, 0.0, 0.0, 1.0], [53.0, 0.0, 0.0, 138.0, 234.0, 0.0, 0.0, 160.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [51.0, 0.0, 2.0, 130.0, 256.0, 0.0, 0.0, 149.0, 0.0, 0.5, 2.0, 0.0, 2.0, 1.0], [66.0, 1.0, 0.0, 120.0, 302.0, 0.0, 0.0, 151.0, 0.0, 0.4, 1.0, 0.0, 2.0, 1.0], [62.0, 1.0, 2.0, 130.0, 231.0, 0.0, 1.0, 146.0, 0.0, 1.8, 1.0, 3.0, 3.0, 1.0], [44.0, 0.0, 2.0, 108.0, 141.0, 0.0, 1.0, 175.0, 0.0, 0.6, 1.0, 0.0, 2.0, 1.0], [63.0, 0.0, 2.0, 135.0, 252.0, 0.0, 0.0, 172.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [52.0, 1.0, 1.0, 134.0, 201.0, 0.0, 1.0, 158.0, 0.0, 0.8, 2.0, 1.0, 2.0, 1.0], [48.0, 1.0, 0.0, 122.0, 222.0, 0.0, 0.0, 186.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [45.0, 1.0, 0.0, 115.0, 260.0, 0.0, 0.0, 185.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [34.0, 1.0, 3.0, 118.0, 182.0, 0.0, 0.0, 174.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [57.0, 0.0, 0.0, 128.0, 303.0, 0.0, 0.0, 159.0, 0.0, 0.0, 2.0, 1.0, 2.0, 1.0], [71.0, 0.0, 2.0, 110.0, 265.0, 1.0, 0.0, 130.0, 0.0, 0.0, 2.0, 1.0, 2.0, 1.0], [54.0, 1.0, 1.0, 108.0, 309.0, 0.0, 1.0, 156.0, 0.0, 0.0, 2.0, 0.0, 3.0, 1.0], [52.0, 1.0, 3.0, 118.0, 186.0, 0.0, 0.0, 190.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0], [41.0, 1.0, 1.0, 135.0, 203.0, 0.0, 1.0, 132.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0], [58.0, 1.0, 2.0, 140.0, 211.0, 1.0, 0.0, 165.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [35.0, 0.0, 0.0, 138.0, 183.0, 0.0, 1.0, 182.0, 0.0, 1.4, 2.0, 0.0, 2.0, 1.0], [51.0, 1.0, 2.0, 100.0, 222.0, 0.0, 1.0, 143.0, 1.0, 1.2, 1.0, 0.0, 2.0, 1.0], [45.0, 0.0, 1.0, 130.0, 234.0, 0.0, 0.0, 175.0, 0.0, 0.6, 1.0, 0.0, 2.0, 1.0], [44.0, 1.0, 1.0, 120.0, 220.0, 0.0, 1.0, 170.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [62.0, 0.0, 0.0, 124.0, 209.0, 0.0, 1.0, 163.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [54.0, 1.0, 2.0, 120.0, 258.0, 0.0, 0.0, 147.0, 0.0, 0.4, 1.0, 0.0, 3.0, 1.0], [51.0, 1.0, 2.0, 94.0, 227.0, 0.0, 1.0, 154.0, 1.0, 0.0, 2.0, 1.0, 3.0, 1.0], [29.0, 1.0, 1.0, 130.0, 204.0, 0.0, 0.0, 202.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [51.0, 1.0, 0.0, 140.0, 261.0, 0.0, 0.0, 186.0, 1.0, 0.0, 2.0, 0.0, 2.0, 1.0], [43.0, 0.0, 2.0, 122.0, 213.0, 0.0, 1.0, 165.0, 0.0, 0.2, 1.0, 0.0, 2.0, 1.0], [55.0, 0.0, 1.0, 135.0, 250.0, 0.0, 0.0, 161.0, 0.0, 1.4, 1.0, 0.0, 2.0, 1.0], [51.0, 1.0, 2.0, 125.0, 245.0, 1.0, 0.0, 166.0, 0.0, 2.4, 1.0, 0.0, 2.0, 1.0], [59.0, 1.0, 1.0, 140.0, 221.0, 0.0, 1.0, 164.0, 1.0, 0.0, 2.0, 0.0, 2.0, 1.0], [52.0, 1.0, 1.0, 128.0, 205.0, 1.0, 1.0, 184.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [58.0, 1.0, 2.0, 105.0, 240.0, 0.0, 0.0, 154.0, 1.0, 0.6, 1.0, 0.0, 3.0, 1.0], [41.0, 1.0, 2.0, 112.0, 250.0, 0.0, 1.0, 179.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [45.0, 1.0, 1.0, 128.0, 308.0, 0.0, 0.0, 170.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [60.0, 0.0, 2.0, 102.0, 318.0, 0.0, 1.0, 160.0, 0.0, 0.0, 2.0, 1.0, 2.0, 1.0], [52.0, 1.0, 3.0, 152.0, 298.0, 1.0, 1.0, 178.0, 0.0, 1.2, 1.0, 0.0, 3.0, 1.0], [42.0, 0.0, 0.0, 102.0, 265.0, 0.0, 0.0, 122.0, 0.0, 0.6, 1.0, 0.0, 2.0, 1.0], [67.0, 0.0, 2.0, 115.0, 564.0, 0.0, 0.0, 160.0, 0.0, 1.6, 1.0, 0.0, 3.0, 1.0], [68.0, 1.0, 2.0, 118.0, 277.0, 0.0, 1.0, 151.0, 0.0, 1.0, 2.0, 1.0, 3.0, 1.0], [46.0, 1.0, 1.0, 101.0, 197.0, 1.0, 1.0, 156.0, 0.0, 0.0, 2.0, 0.0, 3.0, 1.0], [54.0, 0.0, 2.0, 110.0, 214.0, 0.0, 1.0, 158.0, 0.0, 1.6, 1.0, 0.0, 2.0, 1.0], [58.0, 0.0, 0.0, 100.0, 248.0, 0.0, 0.0, 122.0, 0.0, 1.0, 1.0, 0.0, 2.0, 1.0], [48.0, 1.0, 2.0, 124.0, 255.0, 1.0, 1.0, 175.0, 0.0, 0.0, 2.0, 2.0, 2.0, 1.0], [57.0, 1.0, 0.0, 132.0, 207.0, 0.0, 1.0, 168.0, 1.0, 0.0, 2.0, 0.0, 3.0, 1.0], [52.0, 1.0, 2.0, 138.0, 223.0, 0.0, 1.0, 169.0, 0.0, 0.0, 2.0, 4.0, 2.0, 1.0], [54.0, 0.0, 1.0, 132.0, 288.0, 1.0, 0.0, 159.0, 1.0, 0.0, 2.0, 1.0, 2.0, 1.0], [45.0, 0.0, 1.0, 112.0, 160.0, 0.0, 1.0, 138.0, 0.0, 0.0, 1.0, 0.0, 2.0, 1.0], [53.0, 1.0, 0.0, 142.0, 226.0, 0.0, 0.0, 111.0, 1.0, 0.0, 2.0, 0.0, 3.0, 1.0], [62.0, 0.0, 0.0, 140.0, 394.0, 0.0, 0.0, 157.0, 0.0, 1.2, 1.0, 0.0, 2.0, 1.0], [52.0, 1.0, 0.0, 108.0, 233.0, 1.0, 1.0, 147.0, 0.0, 0.1, 2.0, 3.0, 3.0, 1.0], [43.0, 1.0, 2.0, 130.0, 315.0, 0.0, 1.0, 162.0, 0.0, 1.9, 2.0, 1.0, 2.0, 1.0], [53.0, 1.0, 2.0, 130.0, 246.0, 1.0, 0.0, 173.0, 0.0, 0.0, 2.0, 3.0, 2.0, 1.0], [42.0, 1.0, 3.0, 148.0, 244.0, 0.0, 0.0, 178.0, 0.0, 0.8, 2.0, 2.0, 2.0, 1.0], [59.0, 1.0, 3.0, 178.0, 270.0, 0.0, 0.0, 145.0, 0.0, 4.2, 0.0, 0.0, 3.0, 1.0], [63.0, 0.0, 1.0, 140.0, 195.0, 0.0, 1.0, 179.0, 0.0, 0.0, 2.0, 2.0, 2.0, 1.0], [42.0, 1.0, 2.0, 120.0, 240.0, 1.0, 1.0, 194.0, 0.0, 0.8, 0.0, 0.0, 3.0, 1.0], [50.0, 1.0, 2.0, 129.0, 196.0, 0.0, 1.0, 163.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [68.0, 0.0, 2.0, 120.0, 211.0, 0.0, 0.0, 115.0, 0.0, 1.5, 1.0, 0.0, 2.0, 1.0], [69.0, 1.0, 3.0, 160.0, 234.0, 1.0, 0.0, 131.0, 0.0, 0.1, 1.0, 1.0, 2.0, 1.0], [45.0, 0.0, 0.0, 138.0, 236.0, 0.0, 0.0, 152.0, 1.0, 0.2, 1.0, 0.0, 2.0, 1.0], [50.0, 0.0, 1.0, 120.0, 244.0, 0.0, 1.0, 162.0, 0.0, 1.1, 2.0, 0.0, 2.0, 1.0], [50.0, 0.0, 0.0, 110.0, 254.0, 0.0, 0.0, 159.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [64.0, 0.0, 0.0, 180.0, 325.0, 0.0, 1.0, 154.0, 1.0, 0.0, 2.0, 0.0, 2.0, 1.0], [57.0, 1.0, 2.0, 150.0, 126.0, 1.0, 1.0, 173.0, 0.0, 0.2, 2.0, 1.0, 3.0, 1.0], [64.0, 0.0, 2.0, 140.0, 313.0, 0.0, 1.0, 133.0, 0.0, 0.2, 2.0, 0.0, 3.0, 1.0], [43.0, 1.0, 0.0, 110.0, 211.0, 0.0, 1.0, 161.0, 0.0, 0.0, 2.0, 0.0, 3.0, 1.0], [55.0, 1.0, 1.0, 130.0, 262.0, 0.0, 1.0, 155.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [37.0, 0.0, 2.0, 120.0, 215.0, 0.0, 1.0, 170.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [41.0, 1.0, 2.0, 130.0, 214.0, 0.0, 0.0, 168.0, 0.0, 2.0, 1.0, 0.0, 2.0, 1.0], [56.0, 1.0, 3.0, 120.0, 193.0, 0.0, 0.0, 162.0, 0.0, 1.9, 1.0, 0.0, 3.0, 1.0], [46.0, 0.0, 1.0, 105.0, 204.0, 0.0, 1.0, 172.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [46.0, 0.0, 0.0, 138.0, 243.0, 0.0, 0.0, 152.0, 1.0, 0.0, 1.0, 0.0, 2.0, 1.0], [64.0, 0.0, 0.0, 130.0, 303.0, 0.0, 1.0, 122.0, 0.0, 2.0, 1.0, 2.0, 2.0, 1.0], [59.0, 1.0, 0.0, 138.0, 271.0, 0.0, 0.0, 182.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [41.0, 0.0, 2.0, 112.0, 268.0, 0.0, 0.0, 172.0, 1.0, 0.0, 2.0, 0.0, 2.0, 1.0], [54.0, 0.0, 2.0, 108.0, 267.0, 0.0, 0.0, 167.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [39.0, 0.0, 2.0, 94.0, 199.0, 0.0, 1.0, 179.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [34.0, 0.0, 1.0, 118.0, 210.0, 0.0, 1.0, 192.0, 0.0, 0.7, 2.0, 0.0, 2.0, 1.0], [47.0, 1.0, 0.0, 112.0, 204.0, 0.0, 1.0, 143.0, 0.0, 0.1, 2.0, 0.0, 2.0, 1.0], [67.0, 0.0, 2.0, 152.0, 277.0, 0.0, 1.0, 172.0, 0.0, 0.0, 2.0, 1.0, 2.0, 1.0], [52.0, 0.0, 2.0, 136.0, 196.0, 0.0, 0.0, 169.0, 0.0, 0.1, 1.0, 0.0, 2.0, 1.0], [74.0, 0.0, 1.0, 120.0, 269.0, 0.0, 0.0, 121.0, 1.0, 0.2, 2.0, 1.0, 2.0, 1.0], [54.0, 0.0, 2.0, 160.0, 201.0, 0.0, 1.0, 163.0, 0.0, 0.0, 2.0, 1.0, 2.0, 1.0], [49.0, 0.0, 1.0, 134.0, 271.0, 0.0, 1.0, 162.0, 0.0, 0.0, 1.0, 0.0, 2.0, 1.0], [42.0, 1.0, 1.0, 120.0, 295.0, 0.0, 1.0, 162.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [41.0, 1.0, 1.0, 110.0, 235.0, 0.0, 1.0, 153.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [41.0, 0.0, 1.0, 126.0, 306.0, 0.0, 1.0, 163.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [49.0, 0.0, 0.0, 130.0, 269.0, 0.0, 1.0, 163.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [60.0, 0.0, 2.0, 120.0, 178.0, 1.0, 1.0, 96.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [62.0, 1.0, 1.0, 128.0, 208.0, 1.0, 0.0, 140.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [57.0, 1.0, 0.0, 110.0, 201.0, 0.0, 1.0, 126.0, 1.0, 1.5, 1.0, 0.0, 1.0, 1.0], [64.0, 1.0, 0.0, 128.0, 263.0, 0.0, 1.0, 105.0, 1.0, 0.2, 1.0, 1.0, 3.0, 1.0], [51.0, 0.0, 2.0, 120.0, 295.0, 0.0, 0.0, 157.0, 0.0, 0.6, 2.0, 0.0, 2.0, 1.0], [43.0, 1.0, 0.0, 115.0, 303.0, 0.0, 1.0, 181.0, 0.0, 1.2, 1.0, 0.0, 2.0, 1.0], [42.0, 0.0, 2.0, 120.0, 209.0, 0.0, 1.0, 173.0, 0.0, 0.0, 1.0, 0.0, 2.0, 1.0], [67.0, 0.0, 0.0, 106.0, 223.0, 0.0, 1.0, 142.0, 0.0, 0.3, 2.0, 2.0, 2.0, 1.0], [76.0, 0.0, 2.0, 140.0, 197.0, 0.0, 2.0, 116.0, 0.0, 1.1, 1.0, 0.0, 2.0, 1.0], [70.0, 1.0, 1.0, 156.0, 245.0, 0.0, 0.0, 143.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [44.0, 0.0, 2.0, 118.0, 242.0, 0.0, 1.0, 149.0, 0.0, 0.3, 1.0, 1.0, 2.0, 1.0], [60.0, 0.0, 3.0, 150.0, 240.0, 0.0, 1.0, 171.0, 0.0, 0.9, 2.0, 0.0, 2.0, 1.0], [44.0, 1.0, 2.0, 120.0, 226.0, 0.0, 1.0, 169.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [42.0, 1.0, 2.0, 130.0, 180.0, 0.0, 1.0, 150.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [66.0, 1.0, 0.0, 160.0, 228.0, 0.0, 0.0, 138.0, 0.0, 2.3, 2.0, 0.0, 1.0, 1.0], [71.0, 0.0, 0.0, 112.0, 149.0, 0.0, 1.0, 125.0, 0.0, 1.6, 1.0, 0.0, 2.0, 1.0], [64.0, 1.0, 3.0, 170.0, 227.0, 0.0, 0.0, 155.0, 0.0, 0.6, 1.0, 0.0, 3.0, 1.0], [66.0, 0.0, 2.0, 146.0, 278.0, 0.0, 0.0, 152.0, 0.0, 0.0, 1.0, 1.0, 2.0, 1.0], [39.0, 0.0, 2.0, 138.0, 220.0, 0.0, 1.0, 152.0, 0.0, 0.0, 1.0, 0.0, 2.0, 1.0], [58.0, 0.0, 0.0, 130.0, 197.0, 0.0, 1.0, 131.0, 0.0, 0.6, 1.0, 0.0, 2.0, 1.0], [47.0, 1.0, 2.0, 130.0, 253.0, 0.0, 1.0, 179.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [35.0, 1.0, 1.0, 122.0, 192.0, 0.0, 1.0, 174.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [58.0, 1.0, 1.0, 125.0, 220.0, 0.0, 1.0, 144.0, 0.0, 0.4, 1.0, 4.0, 3.0, 1.0], [56.0, 1.0, 1.0, 130.0, 221.0, 0.0, 0.0, 163.0, 0.0, 0.0, 2.0, 0.0, 3.0, 1.0], [56.0, 1.0, 1.0, 120.0, 240.0, 0.0, 1.0, 169.0, 0.0, 0.0, 0.0, 0.0, 2.0, 1.0], [55.0, 0.0, 1.0, 132.0, 342.0, 0.0, 1.0, 166.0, 0.0, 1.2, 2.0, 0.0, 2.0, 1.0], [41.0, 1.0, 1.0, 120.0, 157.0, 0.0, 1.0, 182.0, 0.0, 0.0, 2.0, 0.0, 2.0, 1.0], [38.0, 1.0, 2.0, 138.0, 175.0, 0.0, 1.0, 173.0, 0.0, 0.0, 2.0, 4.0, 2.0, 1.0], [38.0, 1.0, 2.0, 138.0, 175.0, 0.0, 1.0, 173.0, 0.0, 0.0, 2.0, 4.0, 2.0, 1.0]], \"hoverlabel\": {\"namelength\": 0}, \"hovertemplate\": \"output=%{customdata[13]}<br>age=%{customdata[0]}<br>sex=%{customdata[1]}<br>cp=%{customdata[2]}<br>trtbps=%{customdata[3]}<br>chol=%{customdata[4]}<br>fbs=%{customdata[5]}<br>restecg=%{customdata[6]}<br>thalachh=%{customdata[7]}<br>exng=%{customdata[8]}<br>oldpeak=%{customdata[9]}<br>slp=%{customdata[10]}<br>caa=%{customdata[11]}<br>thall=%{customdata[12]}\", \"legendgroup\": \"output=1\", \"marker\": {\"color\": \"#512b58\"}, \"name\": \"output=1\", \"notched\": true, \"offsetgroup\": \"output=1\", \"showlegend\": false, \"type\": \"box\", \"x\": [63, 37, 41, 56, 57, 57, 56, 44, 52, 57, 54, 48, 49, 64, 58, 50, 58, 66, 43, 69, 59, 44, 42, 61, 40, 71, 59, 51, 65, 53, 41, 65, 44, 54, 51, 46, 54, 54, 65, 65, 51, 48, 45, 53, 39, 52, 44, 47, 53, 53, 51, 66, 62, 44, 63, 52, 48, 45, 34, 57, 71, 54, 52, 41, 58, 35, 51, 45, 44, 62, 54, 51, 29, 51, 43, 55, 51, 59, 52, 58, 41, 45, 60, 52, 42, 67, 68, 46, 54, 58, 48, 57, 52, 54, 45, 53, 62, 52, 43, 53, 42, 59, 63, 42, 50, 68, 69, 45, 50, 50, 64, 57, 64, 43, 55, 37, 41, 56, 46, 46, 64, 59, 41, 54, 39, 34, 47, 67, 52, 74, 54, 49, 42, 41, 41, 49, 60, 62, 57, 64, 51, 43, 42, 67, 76, 70, 44, 60, 44, 42, 66, 71, 64, 66, 39, 58, 47, 35, 58, 56, 56, 55, 41, 38, 38], \"xaxis\": \"x2\", \"yaxis\": \"y2\"}, {\"alignmentgroup\": \"True\", \"bingroup\": \"x\", \"hoverlabel\": {\"namelength\": 0}, \"hovertemplate\": \"output=0<br>age=%{x}<br>count=%{y}\", \"legendgroup\": \"output=0\", \"marker\": {\"color\": \"#f64c72\"}, \"name\": \"output=0\", \"offsetgroup\": \"output=0\", \"orientation\": \"v\", \"showlegend\": true, \"type\": \"histogram\", \"x\": [67, 67, 62, 63, 53, 56, 48, 58, 58, 60, 40, 60, 64, 43, 57, 55, 65, 61, 58, 50, 44, 60, 54, 50, 41, 51, 58, 54, 60, 60, 59, 46, 67, 62, 65, 44, 60, 58, 68, 62, 52, 59, 60, 49, 59, 57, 61, 39, 61, 56, 43, 62, 63, 65, 48, 63, 55, 65, 56, 54, 70, 62, 35, 59, 64, 47, 57, 55, 64, 70, 51, 58, 60, 77, 35, 70, 59, 64, 57, 56, 48, 56, 66, 54, 69, 51, 43, 62, 67, 59, 45, 58, 50, 62, 38, 66, 52, 53, 63, 54, 66, 55, 49, 54, 56, 46, 61, 67, 58, 47, 52, 58, 57, 58, 61, 42, 52, 59, 40, 61, 46, 59, 57, 57, 55, 61, 58, 58, 67, 44, 63, 63, 59, 57, 45, 68, 57, 57], \"xaxis\": \"x\", \"yaxis\": \"y\"}, {\"alignmentgroup\": \"True\", \"customdata\": [[67.0, 1.0, 0.0, 160.0, 286.0, 0.0, 0.0, 108.0, 1.0, 1.5, 1.0, 3.0, 2.0, 0.0], [67.0, 1.0, 0.0, 120.0, 229.0, 0.0, 0.0, 129.0, 1.0, 2.6, 1.0, 2.0, 3.0, 0.0], [62.0, 0.0, 0.0, 140.0, 268.0, 0.0, 0.0, 160.0, 0.0, 3.6, 0.0, 2.0, 2.0, 0.0], [63.0, 1.0, 0.0, 130.0, 254.0, 0.0, 0.0, 147.0, 0.0, 1.4, 1.0, 1.0, 3.0, 0.0], [53.0, 1.0, 0.0, 140.0, 203.0, 1.0, 0.0, 155.0, 1.0, 3.1, 0.0, 0.0, 3.0, 0.0], [56.0, 1.0, 2.0, 130.0, 256.0, 1.0, 0.0, 142.0, 1.0, 0.6, 1.0, 1.0, 1.0, 0.0], [48.0, 1.0, 1.0, 110.0, 229.0, 0.0, 1.0, 168.0, 0.0, 1.0, 0.0, 0.0, 3.0, 0.0], [58.0, 1.0, 1.0, 120.0, 284.0, 0.0, 0.0, 160.0, 0.0, 1.8, 1.0, 0.0, 2.0, 0.0], [58.0, 1.0, 2.0, 132.0, 224.0, 0.0, 0.0, 173.0, 0.0, 3.2, 2.0, 2.0, 3.0, 0.0], [60.0, 1.0, 0.0, 130.0, 206.0, 0.0, 0.0, 132.0, 1.0, 2.4, 1.0, 2.0, 3.0, 0.0], [40.0, 1.0, 0.0, 110.0, 167.0, 0.0, 0.0, 114.0, 1.0, 2.0, 1.0, 0.0, 3.0, 0.0], [60.0, 1.0, 0.0, 117.0, 230.0, 1.0, 1.0, 160.0, 1.0, 1.4, 2.0, 2.0, 3.0, 0.0], [64.0, 1.0, 2.0, 140.0, 335.0, 0.0, 1.0, 158.0, 0.0, 0.0, 2.0, 0.0, 2.0, 0.0], [43.0, 1.0, 0.0, 120.0, 177.0, 0.0, 0.0, 120.0, 1.0, 2.5, 1.0, 0.0, 3.0, 0.0], [57.0, 1.0, 0.0, 150.0, 276.0, 0.0, 0.0, 112.0, 1.0, 0.6, 1.0, 1.0, 1.0, 0.0], [55.0, 1.0, 0.0, 132.0, 353.0, 0.0, 1.0, 132.0, 1.0, 1.2, 1.0, 1.0, 3.0, 0.0], [65.0, 0.0, 0.0, 150.0, 225.0, 0.0, 0.0, 114.0, 0.0, 1.0, 1.0, 3.0, 3.0, 0.0], [61.0, 0.0, 0.0, 130.0, 330.0, 0.0, 0.0, 169.0, 0.0, 0.0, 2.0, 0.0, 2.0, 0.0], [58.0, 1.0, 2.0, 112.0, 230.0, 0.0, 0.0, 165.0, 0.0, 2.5, 1.0, 1.0, 3.0, 0.0], [50.0, 1.0, 0.0, 150.0, 243.0, 0.0, 0.0, 128.0, 0.0, 2.6, 1.0, 0.0, 3.0, 0.0], [44.0, 1.0, 0.0, 112.0, 290.0, 0.0, 0.0, 153.0, 0.0, 0.0, 2.0, 1.0, 2.0, 0.0], [60.0, 1.0, 0.0, 130.0, 253.0, 0.0, 1.0, 144.0, 1.0, 1.4, 2.0, 1.0, 3.0, 0.0], [54.0, 1.0, 0.0, 124.0, 266.0, 0.0, 0.0, 109.0, 1.0, 2.2, 1.0, 1.0, 3.0, 0.0], [50.0, 1.0, 2.0, 140.0, 233.0, 0.0, 1.0, 163.0, 0.0, 0.6, 1.0, 1.0, 3.0, 0.0], [41.0, 1.0, 0.0, 110.0, 172.0, 0.0, 0.0, 158.0, 0.0, 0.0, 2.0, 0.0, 3.0, 0.0], [51.0, 0.0, 0.0, 130.0, 305.0, 0.0, 1.0, 142.0, 1.0, 1.2, 1.0, 0.0, 3.0, 0.0], [58.0, 1.0, 0.0, 128.0, 216.0, 0.0, 0.0, 131.0, 1.0, 2.2, 1.0, 3.0, 3.0, 0.0], [54.0, 1.0, 0.0, 120.0, 188.0, 0.0, 1.0, 113.0, 0.0, 1.4, 1.0, 1.0, 3.0, 0.0], [60.0, 1.0, 0.0, 145.0, 282.0, 0.0, 0.0, 142.0, 1.0, 2.8, 1.0, 2.0, 3.0, 0.0], [60.0, 1.0, 2.0, 140.0, 185.0, 0.0, 0.0, 155.0, 0.0, 3.0, 1.0, 0.0, 2.0, 0.0], [59.0, 1.0, 0.0, 170.0, 326.0, 0.0, 0.0, 140.0, 1.0, 3.4, 0.0, 0.0, 3.0, 0.0], [46.0, 1.0, 2.0, 150.0, 231.0, 0.0, 1.0, 147.0, 0.0, 3.6, 1.0, 0.0, 2.0, 0.0], [67.0, 1.0, 0.0, 125.0, 254.0, 1.0, 1.0, 163.0, 0.0, 0.2, 1.0, 2.0, 3.0, 0.0], [62.0, 1.0, 0.0, 120.0, 267.0, 0.0, 1.0, 99.0, 1.0, 1.8, 1.0, 2.0, 3.0, 0.0], [65.0, 1.0, 0.0, 110.0, 248.0, 0.0, 0.0, 158.0, 0.0, 0.6, 2.0, 2.0, 1.0, 0.0], [44.0, 1.0, 0.0, 110.0, 197.0, 0.0, 0.0, 177.0, 0.0, 0.0, 2.0, 1.0, 2.0, 0.0], [60.0, 1.0, 0.0, 125.0, 258.0, 0.0, 0.0, 141.0, 1.0, 2.8, 1.0, 1.0, 3.0, 0.0], [58.0, 1.0, 0.0, 150.0, 270.0, 0.0, 0.0, 111.0, 1.0, 0.8, 2.0, 0.0, 3.0, 0.0], [68.0, 1.0, 2.0, 180.0, 274.0, 1.0, 0.0, 150.0, 1.0, 1.6, 1.0, 0.0, 3.0, 0.0], [62.0, 0.0, 0.0, 160.0, 164.0, 0.0, 0.0, 145.0, 0.0, 6.2, 0.0, 3.0, 3.0, 0.0], [52.0, 1.0, 0.0, 128.0, 255.0, 0.0, 1.0, 161.0, 1.0, 0.0, 2.0, 1.0, 3.0, 0.0], [59.0, 1.0, 0.0, 110.0, 239.0, 0.0, 0.0, 142.0, 1.0, 1.2, 1.0, 1.0, 3.0, 0.0], [60.0, 0.0, 0.0, 150.0, 258.0, 0.0, 0.0, 157.0, 0.0, 2.6, 1.0, 2.0, 3.0, 0.0], [49.0, 1.0, 2.0, 120.0, 188.0, 0.0, 1.0, 139.0, 0.0, 2.0, 1.0, 3.0, 3.0, 0.0], [59.0, 1.0, 0.0, 140.0, 177.0, 0.0, 1.0, 162.0, 1.0, 0.0, 2.0, 1.0, 3.0, 0.0], [57.0, 1.0, 2.0, 128.0, 229.0, 0.0, 0.0, 150.0, 0.0, 0.4, 1.0, 1.0, 3.0, 0.0], [61.0, 1.0, 0.0, 120.0, 260.0, 0.0, 1.0, 140.0, 1.0, 3.6, 1.0, 1.0, 3.0, 0.0], [39.0, 1.0, 0.0, 118.0, 219.0, 0.0, 1.0, 140.0, 0.0, 1.2, 1.0, 0.0, 3.0, 0.0], [61.0, 0.0, 0.0, 145.0, 307.0, 0.0, 0.0, 146.0, 1.0, 1.0, 1.0, 0.0, 3.0, 0.0], [56.0, 1.0, 0.0, 125.0, 249.0, 1.0, 0.0, 144.0, 1.0, 1.2, 1.0, 1.0, 2.0, 0.0], [43.0, 0.0, 0.0, 132.0, 341.0, 1.0, 0.0, 136.0, 1.0, 3.0, 1.0, 0.0, 3.0, 0.0], [62.0, 0.0, 2.0, 130.0, 263.0, 0.0, 1.0, 97.0, 0.0, 1.2, 1.0, 1.0, 3.0, 0.0], [63.0, 1.0, 0.0, 130.0, 330.0, 1.0, 0.0, 132.0, 1.0, 1.8, 2.0, 3.0, 3.0, 0.0], [65.0, 1.0, 0.0, 135.0, 254.0, 0.0, 0.0, 127.0, 0.0, 2.8, 1.0, 1.0, 3.0, 0.0], [48.0, 1.0, 0.0, 130.0, 256.0, 1.0, 0.0, 150.0, 1.0, 0.0, 2.0, 2.0, 3.0, 0.0], [63.0, 0.0, 0.0, 150.0, 407.0, 0.0, 0.0, 154.0, 0.0, 4.0, 1.0, 3.0, 3.0, 0.0], [55.0, 1.0, 0.0, 140.0, 217.0, 0.0, 1.0, 111.0, 1.0, 5.6, 0.0, 0.0, 3.0, 0.0], [65.0, 1.0, 3.0, 138.0, 282.0, 1.0, 0.0, 174.0, 0.0, 1.4, 1.0, 1.0, 2.0, 0.0], [56.0, 0.0, 0.0, 200.0, 288.0, 1.0, 0.0, 133.0, 1.0, 4.0, 0.0, 2.0, 3.0, 0.0], [54.0, 1.0, 0.0, 110.0, 239.0, 0.0, 1.0, 126.0, 1.0, 2.8, 1.0, 1.0, 3.0, 0.0], [70.0, 1.0, 0.0, 145.0, 174.0, 0.0, 1.0, 125.0, 1.0, 2.6, 0.0, 0.0, 3.0, 0.0], [62.0, 1.0, 1.0, 120.0, 281.0, 0.0, 0.0, 103.0, 0.0, 1.4, 1.0, 1.0, 3.0, 0.0], [35.0, 1.0, 0.0, 120.0, 198.0, 0.0, 1.0, 130.0, 1.0, 1.6, 1.0, 0.0, 3.0, 0.0], [59.0, 1.0, 3.0, 170.0, 288.0, 0.0, 0.0, 159.0, 0.0, 0.2, 1.0, 0.0, 3.0, 0.0], [64.0, 1.0, 2.0, 125.0, 309.0, 0.0, 1.0, 131.0, 1.0, 1.8, 1.0, 0.0, 3.0, 0.0], [47.0, 1.0, 2.0, 108.0, 243.0, 0.0, 1.0, 152.0, 0.0, 0.0, 2.0, 0.0, 2.0, 0.0], [57.0, 1.0, 0.0, 165.0, 289.0, 1.0, 0.0, 124.0, 0.0, 1.0, 1.0, 3.0, 3.0, 0.0], [55.0, 1.0, 0.0, 160.0, 289.0, 0.0, 0.0, 145.0, 1.0, 0.8, 1.0, 1.0, 3.0, 0.0], [64.0, 1.0, 0.0, 120.0, 246.0, 0.0, 0.0, 96.0, 1.0, 2.2, 0.0, 1.0, 2.0, 0.0], [70.0, 1.0, 0.0, 130.0, 322.0, 0.0, 0.0, 109.0, 0.0, 2.4, 1.0, 3.0, 2.0, 0.0], [51.0, 1.0, 0.0, 140.0, 299.0, 0.0, 1.0, 173.0, 1.0, 1.6, 2.0, 0.0, 3.0, 0.0], [58.0, 1.0, 0.0, 125.0, 300.0, 0.0, 0.0, 171.0, 0.0, 0.0, 2.0, 2.0, 3.0, 0.0], [60.0, 1.0, 0.0, 140.0, 293.0, 0.0, 0.0, 170.0, 0.0, 1.2, 1.0, 2.0, 3.0, 0.0], [77.0, 1.0, 0.0, 125.0, 304.0, 0.0, 0.0, 162.0, 1.0, 0.0, 2.0, 3.0, 2.0, 0.0], [35.0, 1.0, 0.0, 126.0, 282.0, 0.0, 0.0, 156.0, 1.0, 0.0, 2.0, 0.0, 3.0, 0.0], [70.0, 1.0, 2.0, 160.0, 269.0, 0.0, 1.0, 112.0, 1.0, 2.9, 1.0, 1.0, 3.0, 0.0], [59.0, 0.0, 0.0, 174.0, 249.0, 0.0, 1.0, 143.0, 1.0, 0.0, 1.0, 0.0, 2.0, 0.0], [64.0, 1.0, 0.0, 145.0, 212.0, 0.0, 0.0, 132.0, 0.0, 2.0, 1.0, 2.0, 1.0, 0.0], [57.0, 1.0, 0.0, 152.0, 274.0, 0.0, 1.0, 88.0, 1.0, 1.2, 1.0, 1.0, 3.0, 0.0], [56.0, 1.0, 0.0, 132.0, 184.0, 0.0, 0.0, 105.0, 1.0, 2.1, 1.0, 1.0, 1.0, 0.0], [48.0, 1.0, 0.0, 124.0, 274.0, 0.0, 0.0, 166.0, 0.0, 0.5, 1.0, 0.0, 3.0, 0.0], [56.0, 0.0, 0.0, 134.0, 409.0, 0.0, 0.0, 150.0, 1.0, 1.9, 1.0, 2.0, 3.0, 0.0], [66.0, 1.0, 1.0, 160.0, 246.0, 0.0, 1.0, 120.0, 1.0, 0.0, 1.0, 3.0, 1.0, 0.0], [54.0, 1.0, 1.0, 192.0, 283.0, 0.0, 0.0, 195.0, 0.0, 0.0, 2.0, 1.0, 3.0, 0.0], [69.0, 1.0, 2.0, 140.0, 254.0, 0.0, 0.0, 146.0, 0.0, 2.0, 1.0, 3.0, 3.0, 0.0], [51.0, 1.0, 0.0, 140.0, 298.0, 0.0, 1.0, 122.0, 1.0, 4.2, 1.0, 3.0, 3.0, 0.0], [43.0, 1.0, 0.0, 132.0, 247.0, 1.0, 0.0, 143.0, 1.0, 0.1, 1.0, 4.0, 3.0, 0.0], [62.0, 0.0, 0.0, 138.0, 294.0, 1.0, 1.0, 106.0, 0.0, 1.9, 1.0, 3.0, 2.0, 0.0], [67.0, 1.0, 0.0, 100.0, 299.0, 0.0, 0.0, 125.0, 1.0, 0.9, 1.0, 2.0, 2.0, 0.0], [59.0, 1.0, 3.0, 160.0, 273.0, 0.0, 0.0, 125.0, 0.0, 0.0, 2.0, 0.0, 2.0, 0.0], [45.0, 1.0, 0.0, 142.0, 309.0, 0.0, 0.0, 147.0, 1.0, 0.0, 1.0, 3.0, 3.0, 0.0], [58.0, 1.0, 0.0, 128.0, 259.0, 0.0, 0.0, 130.0, 1.0, 3.0, 1.0, 2.0, 3.0, 0.0], [50.0, 1.0, 0.0, 144.0, 200.0, 0.0, 0.0, 126.0, 1.0, 0.9, 1.0, 0.0, 3.0, 0.0], [62.0, 0.0, 0.0, 150.0, 244.0, 0.0, 1.0, 154.0, 1.0, 1.4, 1.0, 0.0, 2.0, 0.0], [38.0, 1.0, 3.0, 120.0, 231.0, 0.0, 1.0, 182.0, 1.0, 3.8, 1.0, 0.0, 3.0, 0.0], [66.0, 0.0, 0.0, 178.0, 228.0, 1.0, 1.0, 165.0, 1.0, 1.0, 1.0, 2.0, 3.0, 0.0], [52.0, 1.0, 0.0, 112.0, 230.0, 0.0, 1.0, 160.0, 0.0, 0.0, 2.0, 1.0, 2.0, 0.0], [53.0, 1.0, 0.0, 123.0, 282.0, 0.0, 1.0, 95.0, 1.0, 2.0, 1.0, 2.0, 3.0, 0.0], [63.0, 0.0, 0.0, 108.0, 269.0, 0.0, 1.0, 169.0, 1.0, 1.8, 1.0, 2.0, 2.0, 0.0], [54.0, 1.0, 0.0, 110.0, 206.0, 0.0, 0.0, 108.0, 1.0, 0.0, 1.0, 1.0, 2.0, 0.0], [66.0, 1.0, 0.0, 112.0, 212.0, 0.0, 0.0, 132.0, 1.0, 0.1, 2.0, 1.0, 2.0, 0.0], [55.0, 0.0, 0.0, 180.0, 327.0, 0.0, 2.0, 117.0, 1.0, 3.4, 1.0, 0.0, 2.0, 0.0], [49.0, 1.0, 2.0, 118.0, 149.0, 0.0, 0.0, 126.0, 0.0, 0.8, 2.0, 3.0, 2.0, 0.0], [54.0, 1.0, 0.0, 122.0, 286.0, 0.0, 0.0, 116.0, 1.0, 3.2, 1.0, 2.0, 2.0, 0.0], [56.0, 1.0, 0.0, 130.0, 283.0, 1.0, 0.0, 103.0, 1.0, 1.6, 0.0, 0.0, 3.0, 0.0], [46.0, 1.0, 0.0, 120.0, 249.0, 0.0, 0.0, 144.0, 0.0, 0.8, 2.0, 0.0, 3.0, 0.0], [61.0, 1.0, 3.0, 134.0, 234.0, 0.0, 1.0, 145.0, 0.0, 2.6, 1.0, 2.0, 2.0, 0.0], [67.0, 1.0, 0.0, 120.0, 237.0, 0.0, 1.0, 71.0, 0.0, 1.0, 1.0, 0.0, 2.0, 0.0], [58.0, 1.0, 0.0, 100.0, 234.0, 0.0, 1.0, 156.0, 0.0, 0.1, 2.0, 1.0, 3.0, 0.0], [47.0, 1.0, 0.0, 110.0, 275.0, 0.0, 0.0, 118.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.0], [52.0, 1.0, 0.0, 125.0, 212.0, 0.0, 1.0, 168.0, 0.0, 1.0, 2.0, 2.0, 3.0, 0.0], [58.0, 1.0, 0.0, 146.0, 218.0, 0.0, 1.0, 105.0, 0.0, 2.0, 1.0, 1.0, 3.0, 0.0], [57.0, 1.0, 1.0, 124.0, 261.0, 0.0, 1.0, 141.0, 0.0, 0.3, 2.0, 0.0, 3.0, 0.0], [58.0, 0.0, 1.0, 136.0, 319.0, 1.0, 0.0, 152.0, 0.0, 0.0, 2.0, 2.0, 2.0, 0.0], [61.0, 1.0, 0.0, 138.0, 166.0, 0.0, 0.0, 125.0, 1.0, 3.6, 1.0, 1.0, 2.0, 0.0], [42.0, 1.0, 0.0, 136.0, 315.0, 0.0, 1.0, 125.0, 1.0, 1.8, 1.0, 0.0, 1.0, 0.0], [52.0, 1.0, 0.0, 128.0, 204.0, 1.0, 1.0, 156.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0], [59.0, 1.0, 2.0, 126.0, 218.0, 1.0, 1.0, 134.0, 0.0, 2.2, 1.0, 1.0, 1.0, 0.0], [40.0, 1.0, 0.0, 152.0, 223.0, 0.0, 1.0, 181.0, 0.0, 0.0, 2.0, 0.0, 3.0, 0.0], [61.0, 1.0, 0.0, 140.0, 207.0, 0.0, 0.0, 138.0, 1.0, 1.9, 2.0, 1.0, 3.0, 0.0], [46.0, 1.0, 0.0, 140.0, 311.0, 0.0, 1.0, 120.0, 1.0, 1.8, 1.0, 2.0, 3.0, 0.0], [59.0, 1.0, 3.0, 134.0, 204.0, 0.0, 1.0, 162.0, 0.0, 0.8, 2.0, 2.0, 2.0, 0.0], [57.0, 1.0, 1.0, 154.0, 232.0, 0.0, 0.0, 164.0, 0.0, 0.0, 2.0, 1.0, 2.0, 0.0], [57.0, 1.0, 0.0, 110.0, 335.0, 0.0, 1.0, 143.0, 1.0, 3.0, 1.0, 1.0, 3.0, 0.0], [55.0, 0.0, 0.0, 128.0, 205.0, 0.0, 2.0, 130.0, 1.0, 2.0, 1.0, 1.0, 3.0, 0.0], [61.0, 1.0, 0.0, 148.0, 203.0, 0.0, 1.0, 161.0, 0.0, 0.0, 2.0, 1.0, 3.0, 0.0], [58.0, 1.0, 0.0, 114.0, 318.0, 0.0, 2.0, 140.0, 0.0, 4.4, 0.0, 3.0, 1.0, 0.0], [58.0, 0.0, 0.0, 170.0, 225.0, 1.0, 0.0, 146.0, 1.0, 2.8, 1.0, 2.0, 1.0, 0.0], [67.0, 1.0, 2.0, 152.0, 212.0, 0.0, 0.0, 150.0, 0.0, 0.8, 1.0, 0.0, 3.0, 0.0], [44.0, 1.0, 0.0, 120.0, 169.0, 0.0, 1.0, 144.0, 1.0, 2.8, 0.0, 0.0, 1.0, 0.0], [63.0, 1.0, 0.0, 140.0, 187.0, 0.0, 0.0, 144.0, 1.0, 4.0, 2.0, 2.0, 3.0, 0.0], [63.0, 0.0, 0.0, 124.0, 197.0, 0.0, 1.0, 136.0, 1.0, 0.0, 1.0, 0.0, 2.0, 0.0], [59.0, 1.0, 0.0, 164.0, 176.0, 1.0, 0.0, 90.0, 0.0, 1.0, 1.0, 2.0, 1.0, 0.0], [57.0, 0.0, 0.0, 140.0, 241.0, 0.0, 1.0, 123.0, 1.0, 0.2, 1.0, 0.0, 3.0, 0.0], [45.0, 1.0, 3.0, 110.0, 264.0, 0.0, 1.0, 132.0, 0.0, 1.2, 1.0, 0.0, 3.0, 0.0], [68.0, 1.0, 0.0, 144.0, 193.0, 1.0, 1.0, 141.0, 0.0, 3.4, 1.0, 2.0, 3.0, 0.0], [57.0, 1.0, 0.0, 130.0, 131.0, 0.0, 1.0, 115.0, 1.0, 1.2, 1.0, 1.0, 3.0, 0.0], [57.0, 0.0, 1.0, 130.0, 236.0, 0.0, 0.0, 174.0, 0.0, 0.0, 1.0, 1.0, 2.0, 0.0]], \"hoverlabel\": {\"namelength\": 0}, \"hovertemplate\": \"output=%{customdata[13]}<br>age=%{customdata[0]}<br>sex=%{customdata[1]}<br>cp=%{customdata[2]}<br>trtbps=%{customdata[3]}<br>chol=%{customdata[4]}<br>fbs=%{customdata[5]}<br>restecg=%{customdata[6]}<br>thalachh=%{customdata[7]}<br>exng=%{customdata[8]}<br>oldpeak=%{customdata[9]}<br>slp=%{customdata[10]}<br>caa=%{customdata[11]}<br>thall=%{customdata[12]}\", \"legendgroup\": \"output=0\", \"marker\": {\"color\": \"#f64c72\"}, \"name\": \"output=0\", \"notched\": true, \"offsetgroup\": \"output=0\", \"showlegend\": false, \"type\": \"box\", \"x\": [67, 67, 62, 63, 53, 56, 48, 58, 58, 60, 40, 60, 64, 43, 57, 55, 65, 61, 58, 50, 44, 60, 54, 50, 41, 51, 58, 54, 60, 60, 59, 46, 67, 62, 65, 44, 60, 58, 68, 62, 52, 59, 60, 49, 59, 57, 61, 39, 61, 56, 43, 62, 63, 65, 48, 63, 55, 65, 56, 54, 70, 62, 35, 59, 64, 47, 57, 55, 64, 70, 51, 58, 60, 77, 35, 70, 59, 64, 57, 56, 48, 56, 66, 54, 69, 51, 43, 62, 67, 59, 45, 58, 50, 62, 38, 66, 52, 53, 63, 54, 66, 55, 49, 54, 56, 46, 61, 67, 58, 47, 52, 58, 57, 58, 61, 42, 52, 59, 40, 61, 46, 59, 57, 57, 55, 61, 58, 58, 67, 44, 63, 63, 59, 57, 45, 68, 57, 57], \"xaxis\": \"x2\", \"yaxis\": \"y2\"}],\n",
+              "                        {\"barmode\": \"relative\", \"legend\": {\"tracegroupgap\": 0}, \"margin\": {\"t\": 60}, \"template\": {\"data\": {\"bar\": [{\"error_x\": {\"color\": \"#2a3f5f\"}, \"error_y\": {\"color\": \"#2a3f5f\"}, \"marker\": {\"line\": {\"color\": \"#E5ECF6\", \"width\": 0.5}}, \"type\": \"bar\"}], \"barpolar\": [{\"marker\": {\"line\": {\"color\": \"#E5ECF6\", \"width\": 0.5}}, \"type\": \"barpolar\"}], \"carpet\": [{\"aaxis\": {\"endlinecolor\": \"#2a3f5f\", \"gridcolor\": \"white\", \"linecolor\": \"white\", \"minorgridcolor\": \"white\", \"startlinecolor\": \"#2a3f5f\"}, \"baxis\": {\"endlinecolor\": \"#2a3f5f\", \"gridcolor\": \"white\", \"linecolor\": \"white\", \"minorgridcolor\": \"white\", \"startlinecolor\": \"#2a3f5f\"}, \"type\": \"carpet\"}], \"choropleth\": [{\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}, \"type\": \"choropleth\"}], \"contour\": [{\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}, \"colorscale\": [[0.0, \"#0d0887\"], [0.1111111111111111, \"#46039f\"], [0.2222222222222222, \"#7201a8\"], [0.3333333333333333, \"#9c179e\"], [0.4444444444444444, \"#bd3786\"], [0.5555555555555556, \"#d8576b\"], [0.6666666666666666, \"#ed7953\"], [0.7777777777777778, \"#fb9f3a\"], [0.8888888888888888, \"#fdca26\"], [1.0, \"#f0f921\"]], \"type\": \"contour\"}], \"contourcarpet\": [{\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}, \"type\": \"contourcarpet\"}], \"heatmap\": [{\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}, \"colorscale\": [[0.0, \"#0d0887\"], [0.1111111111111111, \"#46039f\"], [0.2222222222222222, \"#7201a8\"], [0.3333333333333333, \"#9c179e\"], [0.4444444444444444, \"#bd3786\"], [0.5555555555555556, \"#d8576b\"], [0.6666666666666666, \"#ed7953\"], [0.7777777777777778, \"#fb9f3a\"], [0.8888888888888888, \"#fdca26\"], [1.0, \"#f0f921\"]], \"type\": \"heatmap\"}], \"heatmapgl\": [{\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}, \"colorscale\": [[0.0, \"#0d0887\"], [0.1111111111111111, \"#46039f\"], [0.2222222222222222, \"#7201a8\"], [0.3333333333333333, \"#9c179e\"], [0.4444444444444444, \"#bd3786\"], [0.5555555555555556, \"#d8576b\"], [0.6666666666666666, \"#ed7953\"], [0.7777777777777778, \"#fb9f3a\"], [0.8888888888888888, \"#fdca26\"], [1.0, \"#f0f921\"]], \"type\": \"heatmapgl\"}], \"histogram\": [{\"marker\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"histogram\"}], \"histogram2d\": [{\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}, \"colorscale\": [[0.0, \"#0d0887\"], [0.1111111111111111, \"#46039f\"], [0.2222222222222222, \"#7201a8\"], [0.3333333333333333, \"#9c179e\"], [0.4444444444444444, \"#bd3786\"], [0.5555555555555556, \"#d8576b\"], [0.6666666666666666, \"#ed7953\"], [0.7777777777777778, \"#fb9f3a\"], [0.8888888888888888, \"#fdca26\"], [1.0, \"#f0f921\"]], \"type\": \"histogram2d\"}], \"histogram2dcontour\": [{\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}, \"colorscale\": [[0.0, \"#0d0887\"], [0.1111111111111111, \"#46039f\"], [0.2222222222222222, \"#7201a8\"], [0.3333333333333333, \"#9c179e\"], [0.4444444444444444, \"#bd3786\"], [0.5555555555555556, \"#d8576b\"], [0.6666666666666666, \"#ed7953\"], [0.7777777777777778, \"#fb9f3a\"], [0.8888888888888888, \"#fdca26\"], [1.0, \"#f0f921\"]], \"type\": \"histogram2dcontour\"}], \"mesh3d\": [{\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}, \"type\": \"mesh3d\"}], \"parcoords\": [{\"line\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"parcoords\"}], \"pie\": [{\"automargin\": true, \"type\": \"pie\"}], \"scatter\": [{\"marker\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"scatter\"}], \"scatter3d\": [{\"line\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"marker\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"scatter3d\"}], \"scattercarpet\": [{\"marker\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"scattercarpet\"}], \"scattergeo\": [{\"marker\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"scattergeo\"}], \"scattergl\": [{\"marker\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"scattergl\"}], \"scattermapbox\": [{\"marker\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"scattermapbox\"}], \"scatterpolar\": [{\"marker\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"scatterpolar\"}], \"scatterpolargl\": [{\"marker\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"scatterpolargl\"}], \"scatterternary\": [{\"marker\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"type\": \"scatterternary\"}], \"surface\": [{\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}, \"colorscale\": [[0.0, \"#0d0887\"], [0.1111111111111111, \"#46039f\"], [0.2222222222222222, \"#7201a8\"], [0.3333333333333333, \"#9c179e\"], [0.4444444444444444, \"#bd3786\"], [0.5555555555555556, \"#d8576b\"], [0.6666666666666666, \"#ed7953\"], [0.7777777777777778, \"#fb9f3a\"], [0.8888888888888888, \"#fdca26\"], [1.0, \"#f0f921\"]], \"type\": \"surface\"}], \"table\": [{\"cells\": {\"fill\": {\"color\": \"#EBF0F8\"}, \"line\": {\"color\": \"white\"}}, \"header\": {\"fill\": {\"color\": \"#C8D4E3\"}, \"line\": {\"color\": \"white\"}}, \"type\": \"table\"}]}, \"layout\": {\"annotationdefaults\": {\"arrowcolor\": \"#2a3f5f\", \"arrowhead\": 0, \"arrowwidth\": 1}, \"coloraxis\": {\"colorbar\": {\"outlinewidth\": 0, \"ticks\": \"\"}}, \"colorscale\": {\"diverging\": [[0, \"#8e0152\"], [0.1, \"#c51b7d\"], [0.2, \"#de77ae\"], [0.3, \"#f1b6da\"], [0.4, \"#fde0ef\"], [0.5, \"#f7f7f7\"], [0.6, \"#e6f5d0\"], [0.7, \"#b8e186\"], [0.8, \"#7fbc41\"], [0.9, \"#4d9221\"], [1, \"#276419\"]], \"sequential\": [[0.0, \"#0d0887\"], [0.1111111111111111, \"#46039f\"], [0.2222222222222222, \"#7201a8\"], [0.3333333333333333, \"#9c179e\"], [0.4444444444444444, \"#bd3786\"], [0.5555555555555556, \"#d8576b\"], [0.6666666666666666, \"#ed7953\"], [0.7777777777777778, \"#fb9f3a\"], [0.8888888888888888, \"#fdca26\"], [1.0, \"#f0f921\"]], \"sequentialminus\": [[0.0, \"#0d0887\"], [0.1111111111111111, \"#46039f\"], [0.2222222222222222, \"#7201a8\"], [0.3333333333333333, \"#9c179e\"], [0.4444444444444444, \"#bd3786\"], [0.5555555555555556, \"#d8576b\"], [0.6666666666666666, \"#ed7953\"], [0.7777777777777778, \"#fb9f3a\"], [0.8888888888888888, \"#fdca26\"], [1.0, \"#f0f921\"]]}, \"colorway\": [\"#636efa\", \"#EF553B\", \"#00cc96\", \"#ab63fa\", \"#FFA15A\", \"#19d3f3\", \"#FF6692\", \"#B6E880\", \"#FF97FF\", \"#FECB52\"], \"font\": {\"color\": \"#2a3f5f\"}, \"geo\": {\"bgcolor\": \"white\", \"lakecolor\": \"white\", \"landcolor\": \"#E5ECF6\", \"showlakes\": true, \"showland\": true, \"subunitcolor\": \"white\"}, \"hoverlabel\": {\"align\": \"left\"}, \"hovermode\": \"closest\", \"mapbox\": {\"style\": \"light\"}, \"paper_bgcolor\": \"white\", \"plot_bgcolor\": \"#E5ECF6\", \"polar\": {\"angularaxis\": {\"gridcolor\": \"white\", \"linecolor\": \"white\", \"ticks\": \"\"}, \"bgcolor\": \"#E5ECF6\", \"radialaxis\": {\"gridcolor\": \"white\", \"linecolor\": \"white\", \"ticks\": \"\"}}, \"scene\": {\"xaxis\": {\"backgroundcolor\": \"#E5ECF6\", \"gridcolor\": \"white\", \"gridwidth\": 2, \"linecolor\": \"white\", \"showbackground\": true, \"ticks\": \"\", \"zerolinecolor\": \"white\"}, \"yaxis\": {\"backgroundcolor\": \"#E5ECF6\", \"gridcolor\": \"white\", \"gridwidth\": 2, \"linecolor\": \"white\", \"showbackground\": true, \"ticks\": \"\", \"zerolinecolor\": \"white\"}, \"zaxis\": {\"backgroundcolor\": \"#E5ECF6\", \"gridcolor\": \"white\", \"gridwidth\": 2, \"linecolor\": \"white\", \"showbackground\": true, \"ticks\": \"\", \"zerolinecolor\": \"white\"}}, \"shapedefaults\": {\"line\": {\"color\": \"#2a3f5f\"}}, \"ternary\": {\"aaxis\": {\"gridcolor\": \"white\", \"linecolor\": \"white\", \"ticks\": \"\"}, \"baxis\": {\"gridcolor\": \"white\", \"linecolor\": \"white\", \"ticks\": \"\"}, \"bgcolor\": \"#E5ECF6\", \"caxis\": {\"gridcolor\": \"white\", \"linecolor\": \"white\", \"ticks\": \"\"}}, \"title\": {\"x\": 0.05}, \"xaxis\": {\"automargin\": true, \"gridcolor\": \"white\", \"linecolor\": \"white\", \"ticks\": \"\", \"title\": {\"standoff\": 15}, \"zerolinecolor\": \"white\", \"zerolinewidth\": 2}, \"yaxis\": {\"automargin\": true, \"gridcolor\": \"white\", \"linecolor\": \"white\", \"ticks\": \"\", \"title\": {\"standoff\": 15}, \"zerolinecolor\": \"white\", \"zerolinewidth\": 2}}}, \"xaxis\": {\"anchor\": \"y\", \"domain\": [0.0, 1.0], \"title\": {\"text\": \"age\"}}, \"xaxis2\": {\"anchor\": \"y2\", \"domain\": [0.0, 1.0], \"matches\": \"x\", \"showgrid\": true, \"showticklabels\": false}, \"yaxis\": {\"anchor\": \"x\", \"domain\": [0.0, 0.7326], \"title\": {\"text\": \"count\"}}, \"yaxis2\": {\"anchor\": \"x2\", \"domain\": [0.7426, 1.0], \"matches\": \"y2\", \"showgrid\": false, \"showline\": false, \"showticklabels\": false, \"ticks\": \"\"}},\n",
+              "                        {\"responsive\": true}\n",
+              "                    ).then(function(){\n",
+              "                            \n",
+              "var gd = document.getElementById('01b97672-5426-497c-a9db-4218bc839681');\n",
+              "var x = new MutationObserver(function (mutations, observer) {{\n",
+              "        var display = window.getComputedStyle(gd).display;\n",
+              "        if (!display || display === 'none') {{\n",
+              "            console.log([gd, 'removed!']);\n",
+              "            Plotly.purge(gd);\n",
+              "            observer.disconnect();\n",
+              "        }}\n",
+              "}});\n",
+              "\n",
+              "// Listen for the removal of the full notebook cells\n",
+              "var notebookContainer = gd.closest('#notebook-container');\n",
+              "if (notebookContainer) {{\n",
+              "    x.observe(notebookContainer, {childList: true});\n",
+              "}}\n",
+              "\n",
+              "// Listen for the clearing of the current output cell\n",
+              "var outputEl = gd.closest('.output');\n",
+              "if (outputEl) {{\n",
+              "    x.observe(outputEl, {childList: true});\n",
+              "}}\n",
+              "\n",
+              "                        })\n",
+              "                };\n",
+              "                \n",
+              "            </script>\n",
+              "        </div>\n",
+              "</body>\n",
+              "</html>"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "KZWl_vo5GuQb"
+      },
+      "source": [
+        "*People having less age has higher chance of heart attack*"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "VzH7p_6kCMrg"
+      },
+      "source": [
+        "# Spliting the Data into Train and Test\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "X = heart.drop(columns=['output'])\n",
+        "y = heart['output']\n",
+        "\n",
+        "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, stratify=y, random_state=40)"
+      ],
+      "execution_count": 11,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "CYizP27pEo_r",
+        "outputId": "97ce8dbe-3e88-497b-c967-13e68296ace7"
+      },
+      "source": [
+        "from sklearn.linear_model import LogisticRegression\n",
+        "\n",
+        "model = LogisticRegression()\n",
+        "model.fit(X_train, y_train)"
+      ],
+      "execution_count": 17,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,\n",
+              "                   intercept_scaling=1, l1_ratio=None, max_iter=100,\n",
+              "                   multi_class='auto', n_jobs=None, penalty='l2',\n",
+              "                   random_state=None, solver='lbfgs', tol=0.0001, verbose=0,\n",
+              "                   warm_start=False)"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 17
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "RRkfiYlGELL-",
+        "outputId": "5558ec5d-bf5a-4000-d0f7-840fbd14177b"
+      },
+      "source": [
+        "prediction = model.predict(X_test)\n",
+        "model.score(X_test, y_test)"
+      ],
+      "execution_count": 18,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0.9010989010989011"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 18
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 279
+        },
+        "id": "dPv0liKNCX0E",
+        "outputId": "c2548ed3-db57-4fee-9626-8708ca213b89"
+      },
+      "source": [
+        "# Going Forward with LinearRegression\n",
+        "pipeline = make_pipeline(StandardScaler(), LogisticRegression(C=100))\n",
+        "pipeline.fit(X_train, y_train)\n",
+        "prediction = pipeline.predict(X_test)\n",
+        "plot_confusion_matrix(pipeline, X_test, y_test, cmap=sns.cm.mako_r)\n",
+        "plt.grid(False)\n",
+        "plt.show()\n"
+      ],
+      "execution_count": 13,
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": "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\n",
+            "text/plain": [
+              "<Figure size 432x288 with 2 Axes>"
+            ]
+          },
+          "metadata": {
+            "tags": [],
+            "needs_background": "light"
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "upUTdYx8CcPQ"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
+
